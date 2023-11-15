@@ -1,0 +1,27 @@
+---
+
+  - name: Installing Kibana (Ubuntu)
+    apt:
+      name: kibana
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Downloading Kibana (CentOS)
+    get_url:
+      url: https://artifacts.elastic.co/downloads/kibana/kibana-7.9.2-x86_64.rpm
+      dest: /tmp/kibana-7.9.2-x86_64.rpm
+    when: ansible_distribution == "CentOS"
+
+
+  - name: Install Kibana (CentOS)
+    dnf:
+      name: /tmp/kibana-7.9.2-x86_64.rpm
+      state: present
+      use_backend: dnf4
+      validate_certs: no
+    when: ansible_distribution == "CentOS"
+
+  - name: Start KIBANA
+    service:
+      name: kibana
+      state: started

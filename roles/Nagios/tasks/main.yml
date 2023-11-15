@@ -1,0 +1,17 @@
+---
+
+- name: install naggios in Ubuntu
+  apt:
+    name:
+      - nagios4
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: install naggios in CentOS
+  dnf:
+    name:
+      - nagios
+    state: latest
+    use_backend: dnf4
+    update_cache: yes
+  when: ansible_distribution == "CentOS"

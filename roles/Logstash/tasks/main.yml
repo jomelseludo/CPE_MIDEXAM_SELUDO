@@ -1,0 +1,26 @@
+---
+
+  - name: Install Logstash (Ubuntu)
+    apt:
+      name: logstash
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Dowloading Logstash (CentOs)
+    get_url:
+      url: https://artifacts.elastic.co/downloads/logstash/logstash-8.10.4-x86_64.rpm
+      dest: /tmp/logstash-8.10.4-x86_64.rpm
+    when: ansible_distribution == "CentOS"
+
+  - name: Installing Logstash (CentOS)
+    dnf:  
+      name: /tmp/logstash-8.10.4-x86_64.rpm
+      state: present
+      use_backend: dnf4
+    when: ansible_distribution == "CentOS"
+
+  - name: Start Logstash
+    service:
+      name: logstash
+      state: restarted
+      enabled: yes

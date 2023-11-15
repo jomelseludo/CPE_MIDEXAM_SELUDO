@@ -1,0 +1,72 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: update (CentOS) 
+    tags: update
+    dnf:
+      update_only: yes
+      update_cache: yes
+      use_backend: dnf4
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+- hosts: elastic 
+  become: true
+  roles:
+    - role: Elastic
+      tags: elastic
+
+- hosts: kibana
+  become: true
+  roles:
+    - role: Kibana
+      tags: kibana
+
+- hosts: logstash 
+  become: true
+  roles:
+    - role: Logstash
+      tags: logstash
+
+- hosts: all
+  become: true
+  roles:
+    - role: Nagios
+      tags: nagios
+
+- hosts: Prometheus 
+  become: true
+  roles:
+    - role: Prometheus
+      tags: prometheus
+
+
+- hosts: Influxdb 
+  become: true
+  roles:
+    - role: Influxdb
+      tags: influxdb
+
+
+- hosts: Grafana 
+  become: true
+  roles:
+    - role: Grafana
+      tags: grafana
+
+- hosts: Mariadb 
+  become: true
+  roles:
+    - role: Mariadb
+      tags: mariadb
+
+
+- hosts: httpd+php 
+  become: true
+  roles:
+    - role: Httpd+php
+      tags: httpd+php
+
